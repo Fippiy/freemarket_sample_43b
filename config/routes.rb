@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   resources :regions
   resources :brands
   resources :categorys
+  root 'users#index'
 end
