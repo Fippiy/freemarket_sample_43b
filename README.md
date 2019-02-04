@@ -5,110 +5,86 @@
 |Column|Type|Options|
 |------|----|-------|
 |nickname|string|null: false|
-|email|string|null: false, unipue: true|
-|avator|text||
+|email|string|null: false, default: "", unipue: true|
+|password|string|null: false, default: ""|
+|avatar|text||
+|profile_comment|text||
 |last_name|string|null: false|
 |first_name|string|null: false|
 |last_name_kana|string|null: false|
 |first_name_kana|string|null: false|
-|tel|string||
-|birthday|integer||
-
-### Association(user)
-- has_many :buyed_items, foreign_key: "buyer_id", class_name: :Item
-- has_many :saling_items, -> { where("buyer_id is NULL") }, foreign_key: "saler_id", class_name: :Item
-- has_many :sold_items, -> { where("buyer_id is not NULL") }, foreign_key: "saler_id", class_name: :Item
-- has_many :transactions
-- has_many :likes
-- has_many :shipping_dates
-- has_many :states
-- has_many :regions
-- has_many :item_photos
-- has_many :delivery_fees
-- has_many :ship_methods
-- has_many :scores
-- has_many :sizes
-- has_many :comments
-- has_one :adress
-
-## adressテーブル
-
-|Colum|Type|Option|
-|-----|----|------|
-|postal_code|string||
-|prefectures|string|null: false|
+|tel|string|unique: true|
+|birthday|date|null: false|
+|postal_code|string|null: false|
+|prefecture|string|null: false|
 |city|string|null: false|
 |number|string|null: false|
 |building|string||
-|user_id|references|foreign_key: true|
 
-### Association(score)
-- belongs_to: user
+### Association(user)
+- has_many :scores
+- has_many :likes
+- has_many :items
 
-## itemsテーブル
+
+## sizesテーブル
 
 |Colum|Type|Option|
 |-----|----|------|
-|name|string|null: false|
-|price|integer|null: false|
-|description|text|null: false|
-|category_id|references|foreign_key: true|
-|buyer_id|references|foreign_key: true|
-|saler_id|references|foreign_key: true|
+|type|integer|default: 0, null: false|
 
-### Association(item)
-- belongs_to :saler, class_name: "User"
-- belongs_to :buyer, class_name: "User"
-- belongs_to :bland
-- has_many :transactions
-- has_many :likes
-- has_many :shipping_dates
-- has_many :states
-- has_many :regions
-- has_many :item_photos
-- has_many :delivery_fees
-- has_many :ship_methods
-- has_many :comments
-- has_many :sizes
+### Association(size)
+- has_many :items
+
+
+## shipping_datesテーブル
+
+|Colum|Type|Option|
+|-----|----|------|
+|day|integer|null: false|
+
+### Association(shippng_date)
+- has_many :items
+
+
+## regionsテーブル
+
+|Colum|Type|Option|
+|-----|----|------|
+|name|integer|null: false|
+
+### Association(regions)
+- has_many :items
+
+
+## ship_methodsテーブル
+
+|Colum|Type|Option|
+|-----|----|------|
+|type|integer|null: false|
+
+### Association(ship_method)
+- has_many :items
+
+## delivery_feesテーブル
+
+|Colum|Type|Option|
+|-----|----|------|
+|type|integer|null: false|
+
+### Association(delivery_fee)
+- has_many :items
 
 ## categoriesテーブル
 
 |Colum|Type|Option|
 |-----|----|------|
 |name|string|null:false|
-|item_id|references|foreign_key: true|
-|parent_id|references|foreign_key: true|
+|parent_id|integer||
 
 ### Association(category)
 - has_many :items
-- belongs_to :parent, class_name: :Category
-- has_many :children, class_name: :Category, foreign_key: :parent_id
-- has_many :category_sizes
-- has_many :sizes, through: :category_sizes
 
-## sizesテーブル
-
-|Colum|Type|Option|
-|-----|----|------|
-|user_id|references|foreign_key: true|
-|item_id|references|foreign_key: true|
-
-### Association(size)
-- belongs_to: user
-- belongs_to: item
-- has_many :category_sizes
-- has_many :categories, through: :category_sizes
-
-## category_sizesテーブル
-
-|Colum|Type|Option|
-|-----|----|------|
-|category_id|references|foreign_key: true|
-|size_id|references|foreign_key: true|
-
-### Association(category_sizes)
-- belongs_to :category
-- belongs_to :size
 
 ## brandsテーブル
 
@@ -119,17 +95,60 @@
 ### Association(brand)
 - has_many :items
 
-## transactionsテーブル
+## conditionsテーブル
 
 |Colum|Type|Option|
 |-----|----|------|
-|status|string|null: false|
-|item_id|references|foreign_key: true|
-|user_id|references|foreign_key: true|
+|type|integer|null: false|
 
-### Association(transaction)
-- belongs_to: user
+### Association(condition)
+- has_many :items
+
+
+## itemsテーブル
+
+|Colum|Type|Option|
+|-----|----|------|
+|name|string|null: false|
+|price|integer|null: false|
+|description|text|null: false|
+|transaction|string||
+|buyer_id|integer||
+|saler_id|integer||
+|category_id|references|foreign_key: true|
+|shipping_date_id|references|foreign_key: true|
+|condition_id|references|foreign_key: true|
+|region_id|references|foreign_key: true|
+|delivery_fee_id|references|foreign_key: true|
+|ship_method_id|references|foreign_key: true|
+|bland_id|references|foreign_key: true|
+|size_id|references|foreign_key: true|
+
+### Association(item)
+- belongs_to :user
+- belongs_to :size
+- belongs_to :shipping_date
+- belongs_to :condition
+- belongs_to :region
+- belongs_to :ship_method
+- belongs_to :delivery_fee
+- belongs_to :category
+- belongs_to :brand
+- has_many :item_photos
+- has_many :likes
+
+
+## item_photosテーブル
+
+|Colum|Type|Option|
+|-----|----|------|
+|photo|text|null: false|
+|item_id|references|foreign_key: true|
+
+
+### Association(item_photo)
 - belongs_to: item
+
 
 ## likesテーブル
 
@@ -142,99 +161,14 @@
 - belongs_to: user
 - belongs_to: item
 
-## shipping_datesテーブル
-
-|Colum|Type|Option|
-|-----|----|------|
-|days|string|null: false|
-|user_id|references|foreign_key: true|
-|item_id|references|foreign_key: true|
-
-### Association(shippng_date)
-- belongs_to: user
-- belongs_to: item
-
-## statesテーブル
-
-|Colum|Type|Option|
-|-----|----|------|
-|type|string|null: false|
-|user_id|references|foreign_key: true|
-|item_id|references|foreign_key: true|
-
-### Association(state)
-- belongs_to: user
-- belongs_to: item
-
-## regionsテーブル
-
-|Colum|Type|Option|
-|-----|----|------|
-|name|string|null: false|
-|user_id|references|foreign_key: true|
-|item_id|references|foreign_key: true|
-
-### Association(regions)
-- belongs_to: user
-- belongs_to: item
-
-
-## item_photosテーブル
-
-|Colum|Type|Option|
-|-----|----|------|
-|photo|text|null: false|
-|user_id|references|foreign_key: true|
-|item_id|references|foreign_key: true|
-
-### Association(item_photo)
-- belongs_to: user
-- belongs_to: item
-
-## delivery_feesテーブル
-
-|Colum|Type|Option|
-|-----|----|------|
-|type|boolean|null: false|
-|user_id|references|foreign_key: true|
-|item_id|references|foreign_key: true|
-
-### Association(delivery_fee)
-- belongs_to: user
-- belongs_to:
-- has_many: ship_methods
-
-## ship_methodsテーブル
-
-|Colum|Type|Option|
-|-----|----|------|
-|user_id|references|foreign_key: true|
-|item_id|references|foreign_key: true|
-
-### Association(ship_method)
-- belongs_to: user
-- belongs_to: item
-- belongs_to: delivery_fee
 
 ## scoresテーブル
 
 |Colum|Type|Option|
 |-----|----|------|
-|type|string|null: false|
+|type|integer|null: false|
 |user_id|references|foreign_key: true|
 
 ### Association(score)
 - belongs_to: user
-
-## commentsテーブル
-
-|Colum|Type|Option|
-|-----|----|------|
-|text|text|null: false|
-|user_id|references|foreign_key: true|
-|item_id|references|foreign_key: true|
-
-### Association(comment)
-- belongs_to: user
-- belongs_to: item
 
