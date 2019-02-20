@@ -1,6 +1,7 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   layout  "session", except: [:index, :show]
+  layout false, only: [:search]
 
   def index
     pickup_categories(1, 138, 259, 683)
@@ -20,7 +21,12 @@ class ItemsController < ApplicationController
   def show
     @item = Item.find(params[:id])
     @comments = @item.comments.includes(:user)
+<<<<<<< HEAD
     @score = Score.all
+=======
+    saler = @item.saler_id
+    @score = Score.where(user_id: saler)
+>>>>>>> fork_master/master
     @categorys = []
     item_category = @item.category
     while item_category
@@ -32,6 +38,14 @@ class ItemsController < ApplicationController
   end
 
   def update
+  end
+
+  def search
+    @brands = Brand.where('name LIKE(?)', "%#{params[:name]}%")
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   private

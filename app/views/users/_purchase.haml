@@ -1,6 +1,10 @@
 - @items.each do |item|
   %li.show__item
+<<<<<<< HEAD
     = link_to item_path(item), class: "show__item--box" do
+=======
+    = link_to new_item_score_path(item), class: "show__item--box" do
+>>>>>>> fork_master/master
       = fa_icon "angle-right", class: "angle"
       = image_tag item.item_photos.first.photo.to_s, class: "photo"
       .discription
