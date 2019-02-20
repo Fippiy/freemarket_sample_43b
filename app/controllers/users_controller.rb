@@ -16,7 +16,7 @@ class UsersController < ApplicationController
   end
 
   def selling
-<<<<<<< HEAD
+
     @items = Item.where(trading: "1").order(id: "DESC")
   end
 
@@ -34,7 +34,7 @@ class UsersController < ApplicationController
 
   def purchased
     @items = Item.where(trading: "3").order(id: "DESC")
-=======
+
     @items = Item.where(trading: 1, saler_id: current_user.id).order(id: "DESC")
   end
 
@@ -52,7 +52,7 @@ class UsersController < ApplicationController
 
   def purchased
     @items = Item.where(trading: 3, buyer_id: current_user.id).order(id: "DESC")
->>>>>>> fork_master/master
+
   end
 
   def logout
