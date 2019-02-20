@@ -1,13 +1,8 @@
 Rails.application.routes.draw do
   root 'items#index'
   devise_for :users, controllers: { sessions: 'sessions' ,registrations: "registrations"}
-<<<<<<< HEAD
-  resources :items, except: [:edit, :destroy] do
-    resources :comments, only: [:create]
-=======
   resources :items, except: [:edit, :destroy] do 
      resources :likes, only: [:create, :destroy]
->>>>>>> origin/master
   end
   resources :users do
     collection do
