@@ -5,11 +5,8 @@ class User < ApplicationRecord
   has_many :likes
   has_many :items, foreign_key: 'saler_id'
   has_many :comments
-<<<<<<< HEAD
-=======
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   VALID_KANA_REGEX = /[ァ-ヴ][ァ-ヴー・]*/
->>>>>>> fork_master/master
   validates :nickname, presence: true
   validates :email, presence: true, uniqueness: true, format: { with: VALID_EMAIL_REGEX }
   validates :encrypted_password, presence: true
