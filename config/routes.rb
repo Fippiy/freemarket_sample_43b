@@ -1,10 +1,6 @@
 Rails.application.routes.draw do
   root 'items#index'
-<<<<<<< HEAD
   devise_for :users, controllers: { sessions: 'sessions' ,registrations: "registrations"}    
-=======
-  devise_for :users, controllers: { sessions: 'sessions' ,registrations: "registrations"}
->>>>>>> fork_master/master
   resources :items, except: [:edit, :destroy] do
     resources :likes, only: [:create, :destroy]
     resources :comments, only: [:create]
